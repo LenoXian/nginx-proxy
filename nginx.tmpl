@@ -216,7 +216,7 @@ server {
 	listen 80 {{ $default_server }};
 	listen [::]:80 {{ $default_server }};
 	access_log /var/log/nginx/access.log vhost;
-
+        rewrite ^/$ /index.htm last;
 	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
 	include {{ printf "/etc/nginx/vhost.d/%s" $host }};
 	{{ else if (exists "/etc/nginx/vhost.d/default") }}
