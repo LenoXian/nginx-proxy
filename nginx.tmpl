@@ -9,7 +9,7 @@
 		{{/* If there is no swarm node or the port is not published on host, use container's IP:PORT */}}
 		{{ else if .Network }}
 			# {{ .Container.Name }}
-			server {{ .Network.IP }}:{{ .Address.Port }}/{{ .Container.Name }};
+			server {{ .Network.IP }}:{{ .Address.Port }};
 		{{ end }}
 	{{ else if .Network }}
 		# {{ .Container.Name }}
@@ -228,7 +228,7 @@ server {
 		include uwsgi_params;
 		uwsgi_pass {{ trim $proto }}://{{ trim $upstream_name }};
 		{{ else }}
-		proxy_pass {{ trim $proto }}://{{ trim $upstream_name }};
+		proxy_pass {{ trim $proto }}://{{ trim $upstream_name }}/{{ .Container.Name }}/;
 		{{ end }}
 		{{ if (exists (printf "/etc/nginx/htpasswd/%s" $host)) }}
 		auth_basic	"Restricted {{ $host }}";
